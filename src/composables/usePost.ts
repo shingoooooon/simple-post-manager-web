@@ -1,39 +1,65 @@
-import type { Post } from '@/types/post'
 import { ref } from 'vue'
-
-const dummyPosts: Post[] = [
-    {
-        id: 1,
-        content: 'content',
-        status: 'draft',
-        createdAt: Date.now()
-    },
-    {
-        id: 2,
-        content: 'content2',
-        status: 'draft',
-        createdAt: Date.now()
-    }
-]
+import type { Post } from '@/types/post'
+import {
+    fetchPostsApi,
+    createPostApi,
+    deletePostApi
+} from '@/api/posts'
 
 export function usePost() {
-    const posts = ref<Post[]>([...dummyPosts])
+  const posts = ref<Post[]>([])
+  const loading = ref({
+    fetch: false,
+    create: false,
+    delete: false
+  })
+  const error = ref<string | null>(null)
 
-    const createPost = (payload: Omit<Post, 'id' | 'createdAt'>) => {
-        posts.value.unshift({
-            id: Date.now(),
-            createdAt: Date.now(),
-            ...payload
-        })
+  const fetchPosts = async () => {
+    try {
+        error.value = null
+        loading.value.fetch = true
+        const res = await fetchPostsApi()
+        posts.value = res
+    } catch {
+        error.value = 'failed to fetch posts'
+    } finally {
+        loading.value.fetch = false
     }
+  }
 
-    const deletePost = (id: Post['id']) => {
-        posts.value = posts.value.filter((post) => post.id != id)
+  const createPost = async (payload: Omit<Post, 'id' | 'createdAt'>): Promise<void> => {
+    try {
+        error.value = null
+        loading.value.create = true
+        const post = await createPostApi(payload)
+        posts.value.unshift(post)
+    } catch {
+        error.value = 'failed to create post'
+    } finally {
+        loading.value.create = false
     }
+  }
 
-    return {
-        posts,
-        createPost,
-        deletePost
+  const deletePost = async (id: Post['id']): Promise<void> => {
+    try {
+        error.value = null
+        loading.value.delete = true
+        await deletePostApi(id)
+        posts.value = posts.value.filter(post => post.id !== id)
+    } catch {
+        error.value = 'failed to delete post'
+    } finally {
+        loading.value.delete = false
     }
+  }
+
+  return {
+    posts,
+    loading,
+    error,
+    fetchPosts,
+    createPost,
+    deletePost
+  }
 }

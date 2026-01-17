@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
 import { usePost } from './composables/usePost';
 import type { Post } from './types/post';
 
-const { posts, createPost, deletePost } = usePost()
+const { 
+  posts,
+  error,
+  loading,
+  fetchPosts,
+  createPost,
+  deletePost
+} = usePost()
 
 const filterStatus = ref<'all' | Post['status']>('all')
 
 const filteredPosts = computed(() => {
   if (filterStatus.value === 'all') return posts.value
   return posts.value.filter((post) => post.status === filterStatus.value)
+})
+
+onMounted(() => {
+  fetchPosts()
 })
 
 </script>
