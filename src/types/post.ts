@@ -9,7 +9,7 @@ export const STATUS_OPTIONS: Array<{
   value: Post['status']
   label: string
 }> = [
-  { value: 'draft', label: '下書き' },
-  { value: 'scheduled', label: '予約投稿' },
-  { value: 'posted', label: '投稿済み' }
+  { value: 'draft', label: 'Draft' },
+  { value: 'scheduled', label: 'Scheduled' },
+  { value: 'posted', label: 'Published' }
 ] as const
