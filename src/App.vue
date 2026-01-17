@@ -3,13 +3,13 @@ import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
 import { usePost } from './composables/usePost';
 
-const { posts, createPost } = usePost()
+const { posts, createPost, deletePost } = usePost()
 
 </script>
 
 <template>
   <div>
-    <PostList :posts="posts" />
+    <PostList :posts="posts" @delete="deletePost"/>
     <PostForm @submit="createPost"/>
   </div>
 </template>

@@ -27,8 +27,13 @@ export function usePost() {
         })
     }
 
+    const deletePost = (id: Post['id']) => {
+        posts.value = posts.value.filter((post) => post.id != id)
+    }
+
     return {
         posts,
-        createPost
+        createPost,
+        deletePost
     }
 }

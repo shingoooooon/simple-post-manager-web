@@ -5,6 +5,14 @@ defineProps<{
     post: Post
 }>()
 
+const emit = defineEmits<{
+    (e: 'delete', id: number): void
+}>()
+
+const deletePost = (id: number) => {
+    emit('delete', id)
+}
+
 </script>
 
 <template>
@@ -13,5 +21,8 @@ defineProps<{
         <h2>{{ post.content }}</h2>
         <p>{{ post.status }}</p>
         <p>{{ post.createdAt }}</p>
+        <button @click="deletePost(post.id)">
+            Delete Post
+        </button>
     </div>
 </template>
