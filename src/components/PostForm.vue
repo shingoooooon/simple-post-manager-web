@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Post } from '@/types/post'
+import { STATUS_OPTIONS } from '@/types/post'
 
 type CreatePostPayload = {
     content: string
@@ -12,12 +13,6 @@ type PostStatus = Post['status']
 const emit = defineEmits<{
     (e: 'submit', payload: CreatePostPayload): void
 }>()
-
-const STATUS_OPTIONS = [
-    { value: 'draft', label: '下書き' },
-    { value: 'published', label: '公開' },
-    { value: 'private', label: '非公開' }
-]
 
 const content = ref('')
 const status = ref<PostStatus>('draft')
