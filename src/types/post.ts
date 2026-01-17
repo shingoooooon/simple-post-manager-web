@@ -1,6 +1,6 @@
 export type Post = {
-  id: string
+  id: number
   content: string
   status: 'draft' | 'scheduled' | 'posted'
-  createdAt: Date
+  createdAt: number
 };

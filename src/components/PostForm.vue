@@ -48,7 +48,6 @@ const submit = () => {
             :value="option.value"
         >
             {{ option.label }}
-        >
         </option>
     </select>
     <button @click="submit">
