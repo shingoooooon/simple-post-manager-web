@@ -50,8 +50,12 @@ onMounted(() => {
       </header>
       
       <main class="main">
-        <PostForm @submit="createPost" class="form-section"/>
-        <PostList :posts="filteredPosts" @delete="deletePost" class="list-section"/>
+        <p v-if="loading.fetch" class="loading">Loading posts...</p>
+        <p v-else-if="error" class="error">{{ error }}</p>
+        <template v-else>
+          <PostForm @submit="createPost" class="form-section"/>
+          <PostList :posts="filteredPosts" @delete="deletePost" class="list-section"/>
+        </template>
       </main>
     </div>
   </div>
@@ -145,6 +149,26 @@ onMounted(() => {
   grid-template-columns: 1fr 2fr;
   gap: 30px;
   align-items: start;
+}
+
+.loading,
+.error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.loading {
+  color: #42b883;
+}
+
+.error {
+  color: #c53030;
 }
 
 .form-section {
